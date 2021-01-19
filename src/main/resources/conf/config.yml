@@ -209,6 +209,9 @@ regionEndPoints:
   sa-east-1 : monitoring.sa-east-1.amazonaws.com
   us-gov-west-1 : monitoring.us-gov-west-1.amazonaws.com
 
+#Encryption key for your controllerInfo password
+encryptionKey: ""
+
 controllerInfo:
   controllerHost: "localhost"
   controllerPort: 8090
@@ -216,7 +219,6 @@ controllerInfo:
   username: "admin"
   password: "admin"
   encryptedPassword: ""
-  encryptionKey: ""
   controllerSslEnabled: false
   enableOrchestration: false
   uniqueHostId: ""
