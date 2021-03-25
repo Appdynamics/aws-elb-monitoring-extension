@@ -16,7 +16,9 @@ import static com.appdynamics.extensions.aws.elb.Constants.CUSTOM_METRICS;
 import static com.appdynamics.extensions.aws.elb.Constants.MONITOR_NAME;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import com.google.common.collect.Lists;
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
+import com.appdynamics.extensions.logging.ExtensionsLoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +28,10 @@ import java.util.Map;
  */
 public class ELBMonitor extends SingleNamespaceCloudwatchMonitor<Configuration> {
 
-    private static final Logger LOGGER = Logger.getLogger(ELBMonitor.class);
-    private static final String DEFAULT_METRIC_PREFIX = String.format("%s%s%s%s", CUSTOM_METRICS, "|", AMAZON_SERVICE, "|");
+    // private static final Logger LOGGER = Logger.getLogger(ELBMonitor.class);
+    private static final Logger LOGGER = ExtensionsLoggerFactory.getLogger(ELBMonitor.class);
+    private static final String DEFAULT_METRIC_PREFIX = String.format("%s%s%s%s", CUSTOM_METRICS, "|", AMAZON_SERVICE,
+            "|");
 
     public ELBMonitor() {
         super(Configuration.class);
@@ -61,23 +65,15 @@ public class ELBMonitor extends SingleNamespaceCloudwatchMonitor<Configuration> 
     }
 
     @Override
-    protected NamespaceMetricStatisticsCollector getNamespaceMetricsCollector(
-            Configuration config) {
+    protected NamespaceMetricStatisticsCollector getNamespaceMetricsCollector(Configuration config) {
         MetricsProcessor metricsProcessor = createMetricsProcessor(config);
-        return new NamespaceMetricStatisticsCollector
-                .Builder(config.getAccounts(),
-                config.getConcurrencyConfig(),
-                config.getMetricsConfig(),
-                metricsProcessor,
-                config.getMetricPrefix())
-                .withCredentialsDecryptionConfig(config.getCredentialsDecryptionConfig())
-                .withProxyConfig(config.getProxyConfig())
-                .build();
+        return new NamespaceMetricStatisticsCollector.Builder(config.getAccounts(), config.getConcurrencyConfig(),
+                config.getMetricsConfig(), metricsProcessor, config.getMetricPrefix())
+                        .withCredentialsDecryptionConfig(config.getCredentialsDecryptionConfig())
+                        .withProxyConfig(config.getProxyConfig()).build();
     }
 
     private MetricsProcessor createMetricsProcessor(Configuration config) {
-        return new ELBMetricsProcessor(
-                config.getMetricsConfig().getIncludeMetrics(),
-                config.getDimensions());
+        return new ELBMetricsProcessor(config.getMetricsConfig().getIncludeMetrics(), config.getDimensions(), config.getNamespace());
     }
 }

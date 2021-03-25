@@ -177,7 +177,7 @@ public class ELBMetricsProcessorTest {
         dimension3.setDisplayName("Target Group");
         dimensionsFromConfig.add(dimension3);
 
-        ELBMetricsProcessor elbMetricsProcessor = new ELBMetricsProcessor(new ArrayList(), dimensionsFromConfig);
+        ELBMetricsProcessor elbMetricsProcessor = new ELBMetricsProcessor(new ArrayList(), dimensionsFromConfig, "AWS/ELB");
 
         List<com.appdynamics.extensions.metrics.Metric> stats = elbMetricsProcessor.createMetricStatsMapForUpload(namespaceMetricStatistics);
 

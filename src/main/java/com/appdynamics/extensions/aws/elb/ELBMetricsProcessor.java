@@ -10,6 +10,7 @@ package com.appdynamics.extensions.aws.elb;
 
 import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.model.DimensionFilter;
+import com.appdynamics.extensions.aws.config.Configuration;
 import com.appdynamics.extensions.aws.config.Dimension;
 import com.appdynamics.extensions.aws.config.IncludeMetric;
 import com.appdynamics.extensions.aws.dto.AWSMetric;
@@ -25,16 +26,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.LongAdder;
 
-import static com.appdynamics.extensions.aws.elb.Constants.AWS_NAMESPACE;
+// import static com.appdynamics.extensions.aws.elb.Constants.AWS_NAMESPACE;
 
 public class ELBMetricsProcessor implements MetricsProcessor {
     private List<IncludeMetric> includeMetrics;
     private List<Dimension> dimensions;
-    private static final String NAMESPACE = AWS_NAMESPACE;
+    // private static final String NAMESPACE = AWS_NAMESPACE;
+    private String NAMESPACE;
 
-    public ELBMetricsProcessor(List<IncludeMetric> includeMetrics, List<Dimension> dimensions) {
+    public ELBMetricsProcessor(List<IncludeMetric> includeMetrics, List<Dimension> dimensions, String namespace) {
         this.includeMetrics = includeMetrics;
         this.dimensions = dimensions;
+        this.NAMESPACE = namespace;
     }
 
     public List<AWSMetric> getMetrics(AmazonCloudWatch awsCloudWatch, String accountName, LongAdder awsRequestsCounter) {
